@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\daxxa\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\daxxa\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_HandRecorder.744603613.00" t="ExcludeRecursive" />
+    <e p="G:\6Freedom\HandRecorder" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="MixedRealityToolkit.Generated" t="Include">
+          <e p="link.xml" t="Include" />
+        </e>
+        <e p="MRTK" t="Include">
+          <e p="Shaders" t="Include">
+            <e p="ChannelPacker.shader" t="Include" />
+            <e p="DepthBufferPostProcess.shader" t="Include" />
+            <e p="InstancedColored.shader" t="Include" />
+            <e p="InvisibleShader.shader" t="Include" />
+            <e p="MixedRealityShaderUtils.cginc" t="Include" />
+            <e p="MixedRealityStandard.shader" t="Include" />
+            <e p="MixedRealityTextMeshPro.shader" t="Include" />
+            <e p="MRTK_Wireframe.shader" t="Include" />
+            <e p="Text3DShader.shader" t="Include" />
+          </e>
+        </e>
+        <e p="RecordAndPlay3D" t="Include">
+          <e p="Demo" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="BulletBehavior.cs" t="Include" />
+              <e p="GameManager.cs" t="Include" />
+              <e p="PlayerBehavior.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Capture.cs" t="Include" />
+            <e p="CustomEventCapture.cs" t="Include" />
+            <e p="Editor" t="Include">
+              <e p="Extension" t="Include">
+                <e p="EditorUtil.cs" t="Include" />
+                <e p="ExportAnimationClipWindow.cs" t="Include" />
+                <e p="ExportCSVWindow.cs" t="Include" />
+                <e p="ImportWindow.cs" t="Include" />
+                <e p="PlaybackWindow.cs" t="Include" />
+                <e p="RapFile" t="Include">
+                  <e p="RapFileGlobal.cs" t="Include" />
+                  <e p="RapFileWrapper.cs" t="Include" />
+                  <e p="RapFileWrapperInspector.cs" t="Include" />
+                </e>
+                <e p="RecordingEditor.cs" t="Include" />
+                <e p="RecordingWindow.cs" t="Include" />
+              </e>
+              <e p="RecordingUtil.cs" t="Include" />
+            </e>
+            <e p="IO" t="Include">
+              <e p="Packager.cs" t="Include" />
+              <e p="Unpackager.cs" t="Include" />
+            </e>
+            <e p="Playback" t="Include">
+              <e p="Actor.cs" t="Include" />
+              <e p="ActorPlaybackControl.cs" t="Include" />
+              <e p="IActorBuilder.cs" t="Include" />
+              <e p="IPlaybackCustomEventHandler.cs" t="Include" />
+              <e p="PausedPlaybackState.cs" t="Include" />
+              <e p="PlaybackBehavior.cs" t="Include" />
+              <e p="PlaybackState.cs" t="Include" />
+              <e p="PlaybackStateInfo.cs" t="Include" />
+              <e p="PlayingPlaybackState.cs" t="Include" />
+              <e p="StoppedPlaybackState.cs" t="Include" />
+            </e>
+            <e p="Record" t="Include">
+              <e p="Recorder.cs" t="Include" />
+              <e p="RecordingState.cs" t="Include" />
+              <e p="SubjectBehavior.cs" t="Include" />
+              <e p="SubjectRecorder.cs" t="Include" />
+            </e>
+            <e p="Recording.cs" t="Include" />
+            <e p="SubjectRecording.cs" t="Include" />
+            <e p="Transport" t="Include">
+              <e p="Recording.cs" t="Include" />
+            </e>
+            <e p="UnityLifeCycleEvent.cs" t="Include" />
+            <e p="UnityLifeCycleEventCapture.cs" t="Include" />
+            <e p="Util" t="Include">
+              <e p="CaptureUtil.cs" t="Include" />
+              <e p="FormatingUtil.cs" t="Include" />
+            </e>
+            <e p="VectorCapture.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="RecordTest" t="Include">
+            <e p="CubeRecorder.cs" t="Include" />
+            <e p="Recorded.cs" t="Include" />
+          </e>
+          <e p="ReplayHandsManager.cs" t="Include" />
+          <e p="ReplayManager.cs" t="Include" />
+          <e p="SimpleCameraController.cs" t="Include" />
+        </e>
+        <e p="TextMesh Pro" t="Include">
+          <e p="Fonts" t="Include">
+            <e p="LiberationSans - OFL.txt" t="Include" />
+          </e>
+          <e p="Resources" t="Include">
+            <e p="LineBreaking Following Characters.txt" t="Include" />
+            <e p="LineBreaking Leading Characters.txt" t="Include" />
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="TMP_Bitmap-Custom-Atlas.shader" t="Include" />
+            <e p="TMP_Bitmap-Mobile.shader" t="Include" />
+            <e p="TMP_Bitmap.shader" t="Include" />
+            <e p="TMP_SDF Overlay.shader" t="Include" />
+            <e p="TMP_SDF SSD.shader" t="Include" />
+            <e p="TMP_SDF-Mobile Masking.shader" t="Include" />
+            <e p="TMP_SDF-Mobile Overlay.shader" t="Include" />
+            <e p="TMP_SDF-Mobile SSD.shader" t="Include" />
+            <e p="TMP_SDF-Mobile.shader" t="Include" />
+            <e p="TMP_SDF-Surface-Mobile.shader" t="Include" />
+            <e p="TMP_SDF-Surface.shader" t="Include" />
+            <e p="TMP_SDF.shader" t="Include" />
+            <e p="TMP_Sprite.shader" t="Include" />
+            <e p="TMPro.cginc" t="Include" />
+            <e p="TMPro_Mobile.cginc" t="Include" />
+            <e p="TMPro_Properties.cginc" t="Include" />
+            <e p="TMPro_Surface.cginc" t="Include" />
+          </e>
+          <e p="Sprites" t="Include">
+            <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
+        <e p="TutorialInfo" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="Editor" t="Include">
+              <e p="ReadmeEditor.cs" t="Include" />
+            </e>
+            <e p="Readme.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="HandRecorder.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\Bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
