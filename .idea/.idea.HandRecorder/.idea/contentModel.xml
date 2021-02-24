@@ -88,10 +88,6 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
-          <e p="RecordTest" t="Include">
-            <e p="CubeRecorder.cs" t="Include" />
-            <e p="Recorded.cs" t="Include" />
-          </e>
           <e p="ReplayHandsManager.cs" t="Include" />
           <e p="ReplayManager.cs" t="Include" />
           <e p="SimpleCameraController.cs" t="Include" />

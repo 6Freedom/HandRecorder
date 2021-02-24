@@ -604,11 +604,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: TemplateLightweight
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: DefaultCompany
+  metroCertificateIssuer: DefaultCompany
+  metroCertificateNotAfter: 0012894bc529d801
   metroApplicationDescription: Template_Lightweight
   wsaImages: {}
   metroTileShortName: HandRecorder
@@ -625,10 +625,10 @@ PlayerSettings:
   metroSplashScreenUseBackgroundColor: 0
   platformCapabilities:
     WindowsStoreApps:
-      SpatialPerception: True
-      Microphone: True
       GazeInput: True
+      SpatialPerception: True
       InternetClient: True
+      Microphone: True
   metroTargetDeviceFamilies: {}
   metroFTAName: 
   metroFTAFileTypes: []

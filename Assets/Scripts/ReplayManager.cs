@@ -1,25 +1,32 @@
+using System.Collections.Generic;
+using EliCDavis.RecordAndPlay;
+using EliCDavis.RecordAndPlay.Playback;
+using EliCDavis.RecordAndPlay.Record;
+using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEditor.Animations;
 using UnityEngine;
 
-public class ReplayManager : MonoBehaviour //, IMixedRealitySourceStateHandler
+public class ReplayManager : MonoBehaviour, IActorBuilder
 {
     [SerializeField] private GameObject playspace;
     [SerializeField] private AnimationClip registeredClip;
 
-    [SerializeField] private GameObject replayHands;
+    [SerializeField] private GameObject leftReplayHand;
+    [SerializeField] private GameObject rightReplayHand;
 
-    [SerializeField] private AnimatorOverrideController overrideController;
+    [SerializeField] private Recording debugRecoring;
     
-    private GameObjectRecorder recorder;
-
+    private Recorder recorder;
+    private Recording lastRecording;
+    private PlaybackBehavior playbackBehavior;
 
     private bool recording = false;
     
     private void Start()
     {
-        recorder = new GameObjectRecorder(playspace);
+        recorder = ScriptableObject.CreateInstance<Recorder>();
+        //playbackBehavior = PlaybackBehavior.Build(lastRecording, this, null, true);
     }
     
     // Enable tracking hands for this object,  can't use OnSourceDetected without this
@@ -29,14 +36,9 @@ public class ReplayManager : MonoBehaviour //, IMixedRealitySourceStateHandler
     //    CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        if (registeredClip == null) return;
-        if (recorder == null) return;
-        
-        Debug.Log("recording");
-        
-        recorder.TakeSnapshot(Time.deltaTime);
+        //Debug.Log("Currently playing : " + playbackBehavior.CurrentlyPlaying());
     }
 
     public GameObject[] GetHandsToRecord()
@@ -60,9 +62,11 @@ public class ReplayManager : MonoBehaviour //, IMixedRealitySourceStateHandler
 
     public void StopRecording()
     {
-        registeredClip.ClearCurves();
-        recorder.SaveToClip(registeredClip);
-        recorder.ResetRecording();
+        Debug.Log("Stopped recording");
+        
+        lastRecording = recorder.Finish();
+        lastRecording.SaveToAssets("Recording Example");
+
     }
 
     public void StartRecording()
@@ -73,9 +77,14 @@ public class ReplayManager : MonoBehaviour //, IMixedRealitySourceStateHandler
         {
             if(hand != null)
             {
-                recorder.BindComponentsOfType<Transform>(hand, true);
+                ForEachChild(hand.transform, child =>
+                {
+                    SubjectBehavior.Build(child.gameObject, recorder);
+                }, true);
             }
         }
+        
+        recorder.Start();
     }
 
     public void SwitchRecording()
@@ -93,10 +102,10 @@ public class ReplayManager : MonoBehaviour //, IMixedRealitySourceStateHandler
     }
 
     private GameObject instantiatedHands;
-    
+
     public void Replay()
     {
-        if (registeredClip != null)
+        /*if (registeredClip != null)
         {
             instantiatedHands = Instantiate(replayHands);
             
@@ -107,6 +116,45 @@ public class ReplayManager : MonoBehaviour //, IMixedRealitySourceStateHandler
             destroyEvent.functionName = "DestroyReplayHands";
 
             instantiatedHands.GetComponent<Animator>().runtimeAnimatorController.animationClips[0].AddEvent(destroyEvent);
+        }*/
+        
+        
+        playbackBehavior.Play();
+        
+    }
+
+    [ContextMenu("debgu replay")]
+    public void DebugReplay()
+    {
+        playbackBehavior = PlaybackBehavior.Build(debugRecoring, this, null, true);
+    }
+
+    public Actor Build(int subjectId, string subjectName, Dictionary<string, string> metadata)
+    {
+        if (subjectName == "Right_RiggedHandRight(Clone)")
+        {
+            var instantiatedReplayHand = Instantiate(leftReplayHand);
+            return new Actor(instantiatedReplayHand);
+        }
+        else if (subjectName == "Left_RiggedHandLeft(Clone)")
+        {
+            var instantiatedReplayHand = Instantiate(rightReplayHand);
+            return new Actor(instantiatedReplayHand);
+        }
+
+        return null;
+    }
+
+    public delegate void ForEachChildDel(Transform child);
+
+    public static void ForEachChild(Transform t, ForEachChildDel del, bool recursive = true)
+    {
+        for (int i = 0; i < t.childCount; i++)
+        {
+            Transform child = t.GetChild(i);
+            if (recursive)
+                ForEachChild(child, del);
+            del(child);
         }
     }
 
