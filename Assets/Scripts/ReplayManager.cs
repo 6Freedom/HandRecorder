@@ -131,7 +131,7 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
 
     public Actor Build(int subjectId, string subjectName, Dictionary<string, string> metadata)
     {
-        if (subjectName == "Right_RiggedHandRight(Clone)")
+        /*if (subjectName == "Right_RiggedHandRight(Clone)")
         {
             var instantiatedReplayHand = Instantiate(leftReplayHand);
             return new Actor(instantiatedReplayHand);
@@ -140,9 +140,13 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
         {
             var instantiatedReplayHand = Instantiate(rightReplayHand);
             return new Actor(instantiatedReplayHand);
-        }
+        }*/
 
-        return null;
+        GameObject previewArticulation = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        
+        previewArticulation.transform.localScale = new Vector3(0.02f,0.02f,0.02f);
+
+        return new Actor(previewArticulation);
     }
 
     public delegate void ForEachChildDel(Transform child);
