@@ -263,7 +263,11 @@ MonoBehaviour:
   registeredClip: {fileID: 7400000, guid: 7e60bdc846437104db97c93951800274, type: 2}
   leftReplayHandPrefab: {fileID: 61451597023024772, guid: ff7431a5609e4ee48b87cebf0f73a554, type: 3}
   rightReplayHandPrefab: {fileID: 3512491064599439886, guid: ccfd3868d04f8944bac8fb18735b560f, type: 3}
-  debugRecording: {fileID: 0}
+  middlePrefab: {fileID: 0}
+  pinkyPrefab: {fileID: 0}
+  pointPrefab: {fileID: 0}
+  ringPrefab: {fileID: 0}
+  thumbPrefab: {fileID: 0}
 --- !u!1001 &663666017
 PrefabInstance:
   m_ObjectHideFlags: 0
