@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using EliCDavis.RecordAndPlay;
 using EliCDavis.RecordAndPlay.Playback;
@@ -7,16 +8,16 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-public class ReplayManager : MonoBehaviour, IActorBuilder
+public class ReplayManager : MonoBehaviour, IActorBuilder, IMixedRealitySourceStateHandler
 {
     [SerializeField] private GameObject playspace;
     [SerializeField] private AnimationClip registeredClip;
 
-    [SerializeField] private GameObject leftReplayHand;
-    [SerializeField] private GameObject rightReplayHand;
+    [SerializeField] private GameObject leftReplayHandPrefab;
+    [SerializeField] private GameObject rightReplayHandPrefab;
 
     [SerializeField] private Recording debugRecording;
-    
+ 	
     private Recorder recorder;
     private Recording lastRecording;
     private PlaybackBehavior playbackBehavior;
@@ -33,8 +34,8 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
     // Deprecated version of this is adding component "InputSystemGlobalListener" to the object <- don't do this !
     private void OnEnable()
     {
-    //    CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
-    }
+		CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+	}
 
     private void Update()
     {
@@ -55,18 +56,21 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
         {
             hands[1] = HandJointUtils.FindHand(Handedness.Right).Visualizer.GameObjectProxy;
         }
-
         
         return hands;
+    }
+
+    public IEnumerator DestroyReplayObjectAfter(float duration)
+    {
+		yield return new WaitForSeconds(duration);
+		playbackBehavior.Stop();
     }
 
     public void StopRecording()
     {
         Debug.Log("Stopped recording");
-        
         lastRecording = recorder.Finish();
         //lastRecording.SaveToAssets("Recording Example");
-
     }
 
     public void StartRecording()
@@ -77,7 +81,7 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
         {
             if(hand != null)
             {
-                ForEachChild(hand.transform, child =>
+                Utility.ForEachChild(hand.transform, child =>
                 {
                     SubjectBehavior.Build(child.gameObject, recorder);
                 }, true);
@@ -85,9 +89,9 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
         }
         
         recorder.Start();
-    }
+	}
 
-    public void SwitchRecording()
+	public void SwitchRecording()
     {
         if (!recording)
         {
@@ -100,8 +104,6 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
             StopRecording();
         }
     }
-
-    private GameObject instantiatedHands;
 
     public void Replay()
     {
@@ -120,67 +122,52 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
         if (lastRecording != null)
         {
             playbackBehavior = PlaybackBehavior.Build(lastRecording, this, null, false);
+			StartCoroutine(DestroyReplayObjectAfter(lastRecording.GetDuration()));
+			playbackBehavior.Play();
         }
+	}
 
-        
-        playbackBehavior.Play();
-        
-    }
-
-    [ContextMenu("debgu replay")]
+	[ContextMenu("debug replay")]
     public void DebugReplay()
     {
-    }
+	    playbackBehavior.Play();
+	}
 
-    public Actor Build(int subjectId, string subjectName, Dictionary<string, string> metadata)
+
+	public Actor Build(int subjectId, string subjectName, Dictionary<string, string> metadata)
     {
         /*if (subjectName == "Right_RiggedHandRight(Clone)")
         {
-            var instantiatedReplayHand = Instantiate(leftReplayHand);
+            var instantiatedReplayHand = Instantiate(leftReplayHandPrefab);
             return new Actor(instantiatedReplayHand);
         }
         else if (subjectName == "Left_RiggedHandLeft(Clone)")
         {
-            var instantiatedReplayHand = Instantiate(rightReplayHand);
+            var instantiatedReplayHand = Instantiate(rightReplayHandPrefab);
             return new Actor(instantiatedReplayHand);
         }*/
 
         GameObject previewArticulation = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        
-        previewArticulation.transform.localScale = new Vector3(0.02f,0.02f,0.02f);
-
+		previewArticulation.transform.localScale = new Vector3(0.02f,0.02f,0.02f);
         return new Actor(previewArticulation);
     }
 
-    public delegate void ForEachChildDel(Transform child);
+	public void OnSourceDetected(SourceStateEventData eventData)
+	{
+		Debug.Log("new source");
+		if (eventData.Controller != null)
+		{
+			if (recording)
+			{
+				Debug.Log("Source added to record");
+				SubjectBehavior.Build(eventData.Controller.Visualizer.GameObjectProxy, recorder);
+			}
+		}
 
-    public static void ForEachChild(Transform t, ForEachChildDel del, bool recursive = true)
-    {
-        for (int i = 0; i < t.childCount; i++)
-        {
-            Transform child = t.GetChild(i);
-            if (recursive)
-                ForEachChild(child, del);
-            del(child);
-        }
-    }
+	}
 
+	public void OnSourceLost(SourceStateEventData eventData)
+	{
+	}
 
-    /*public void OnSourceDetected(SourceStateEventData eventData)
-    {
-        Debug.Log("new source");
-        if (eventData.Controller != null)
-        {
-            if (recording)
-            {
-                Debug.Log("Source added to record");
-                recorder.BindComponentsOfType<Transform>(eventData.Controller.Visualizer.GameObjectProxy, true);
-            }
-        }
-        
-    }
-
-    public void OnSourceLost(SourceStateEventData eventData)
-    {
-    }*/
 }
