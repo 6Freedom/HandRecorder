@@ -15,7 +15,7 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
     [SerializeField] private GameObject leftReplayHand;
     [SerializeField] private GameObject rightReplayHand;
 
-    [SerializeField] private Recording debugRecoring;
+    [SerializeField] private Recording debugRecording;
     
     private Recorder recorder;
     private Recording lastRecording;
@@ -65,7 +65,7 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
         Debug.Log("Stopped recording");
         
         lastRecording = recorder.Finish();
-        lastRecording.SaveToAssets("Recording Example");
+        //lastRecording.SaveToAssets("Recording Example");
 
     }
 
@@ -117,7 +117,11 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
 
             instantiatedHands.GetComponent<Animator>().runtimeAnimatorController.animationClips[0].AddEvent(destroyEvent);
         }*/
-        
+        if (lastRecording != null)
+        {
+            playbackBehavior = PlaybackBehavior.Build(lastRecording, this, null, false);
+        }
+
         
         playbackBehavior.Play();
         
@@ -126,7 +130,6 @@ public class ReplayManager : MonoBehaviour, IActorBuilder
     [ContextMenu("debgu replay")]
     public void DebugReplay()
     {
-        playbackBehavior = PlaybackBehavior.Build(debugRecoring, this, null, true);
     }
 
     public Actor Build(int subjectId, string subjectName, Dictionary<string, string> metadata)
