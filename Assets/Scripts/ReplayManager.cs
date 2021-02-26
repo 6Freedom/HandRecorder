@@ -18,7 +18,8 @@ public class ReplayManager : MonoBehaviour, IActorBuilder, IMixedRealitySourceSt
 
     [SerializeField] private Recording debugRecording;
 
-    private GameObject replayHandInstance;
+    private GameObject replayLeftHandInstance;
+    private GameObject replayRightHandInstance;
  	
     private Recorder recorder;
     private Recording lastRecording;
@@ -71,9 +72,9 @@ public class ReplayManager : MonoBehaviour, IActorBuilder, IMixedRealitySourceSt
             if(hand != null)
             {
                 Utility.ForEachChild(hand.transform, child =>
-                {
-                    SubjectBehavior.Build(child.gameObject, recorder);
-                }, true);
+                {	
+	                SubjectBehavior.Build(child.gameObject, recorder);
+                });
             }
         }
         
@@ -96,9 +97,11 @@ public class ReplayManager : MonoBehaviour, IActorBuilder, IMixedRealitySourceSt
 
     public void Replay()
     {
-        if (lastRecording != null)
+		// do not play a playback if there is already one playing
+        if (lastRecording != null && (playbackBehavior == null || !playbackBehavior.CurrentlyPlaying()))
         {
-			replayHandInstance = Instantiate(leftReplayHandPrefab);
+			replayLeftHandInstance = Instantiate(leftReplayHandPrefab);
+			replayRightHandInstance = Instantiate(rightReplayHandPrefab);
 			playbackBehavior = PlaybackBehavior.Build(lastRecording, this, null, false);
 			StartCoroutine(DestroyReplayObjectAfter(lastRecording.GetDuration()));
 			playbackBehavior.Play();
@@ -112,8 +115,17 @@ public class ReplayManager : MonoBehaviour, IActorBuilder, IMixedRealitySourceSt
 	}
 
 	public Actor Build(int subjectId, string subjectName, Dictionary<string, string> metadata)
-    {
-		return  new Actor(replayHandInstance.transform.RecursiveFind(subjectName).gameObject);
+	{
+		var tranformFound = replayLeftHandInstance.transform.RecursiveFind(subjectName);
+		if (tranformFound == null)
+			tranformFound = replayRightHandInstance.transform.RecursiveFind(subjectName);
+
+		if (tranformFound == null)
+		{
+			Debug.Log($"{subjectName} is null");
+		}
+
+		return new Actor(tranformFound.gameObject);
     }
 
 	public void OnSourceDetected(SourceStateEventData eventData)

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
@@ -13,7 +15,7 @@ public class MRTKRecording : MonoBehaviour
 
     private bool recording = false;
 
-    private string lastAnimation;
+    private Task<string> lastAnim;
     
     void Start()
     {
@@ -32,13 +34,14 @@ public class MRTKRecording : MonoBehaviour
         {
             recording = !recording;
             recordingService.StopRecording();
-            lastAnimation = recordingService.SaveInputAnimation("lastanimation", Application.persistentDataPath);
-        }
+            lastAnim = recordingService.SaveInputAnimationAsync("lastanimation", Application.persistentDataPath);
+		}
     }
 
     public void Replay()
     {
-        playbackService.LoadInputAnimation(Application.persistentDataPath + "/lastanimation");
+	    lastAnim.Wait();
+		playbackService.LoadInputAnimation(Application.persistentDataPath + "/lastanimation");
         playbackService.Play();
     }
 }
